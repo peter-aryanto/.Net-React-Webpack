@@ -1,15 +1,15 @@
-@{
+﻿@{
     ViewData["Title"] = "Home Page";
 }
 
-
+<% const relativePath = path => path.replace("../../wwwroot/", ""); %>
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Let's learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
     <div id="root"></div>
 
-
-    <script type="text/javascript" src="main.d69159260efd8ea61ea2.js" defer></script>
-
+<% for (const chunk of htmlWebpackPlugin.files.js.filter(f => !f.includes("polyfill"))) { %>
+    <script type="text/javascript" src="<%= relativePath(chunk) %>" defer></script>
+<% } %>
 </div>

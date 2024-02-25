@@ -13,16 +13,26 @@ const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader
 
 const config = {
     entry: './src/index.js',
+    // output: {
+    //     path: path.resolve(__dirname, 'dist'),
+    // },
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, '..', 'wwwroot'),
+        filename: '[name].[contenthash].js',
+        // clean: true,
     },
+    devtool: isProduction ? 'nosources-source-map' : 'eval-source-map',
     devServer: {
         open: true,
         host: 'localhost',
     },
     plugins: [
+        // new CleanWebpackPlugin({ verbose: true, cleanStaleWebpackAssets: false }),
         new HtmlWebpackPlugin({
-            template: 'index.html',
+            template: './Index.cshtml',
+            filename: '../Views/Home/Index.cshtml',
+            inject: false,
+            minify: false,
         }),
 
         // Add your plugins here
@@ -33,6 +43,19 @@ const config = {
             {
                 test: /\.(js|jsx)$/i,
                 loader: 'babel-loader',
+                options: {
+                    presets: [
+                        '@babel/env',
+                        // '@babel/preset-react',
+                        ['@babel/preset-react', {'runtime': 'automatic'}],
+                        // ['@babel/plugin-transform-react-jsx', {
+                        //     'runtime': 'automatic'
+                        // }],
+                    ],
+                    // plugins: [
+                    //   '@babel/plugin-syntax-jsx',
+                    // ],
+                },
             },
             {
                 test: /\.css$/i,
